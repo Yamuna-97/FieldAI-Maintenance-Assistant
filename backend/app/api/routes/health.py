@@ -5,6 +5,7 @@ from app.schemas.system import HealthResponse, SystemStatusResponse, ComponentSt
 from app.services.gemini_service import gemini_service
 from app.services.nvidia_embedding_service import nvidia_embedding_service
 from app.services.rag_service import rag_service
+from app.db.mongodb import db_service
 
 router = APIRouter()
 
@@ -30,6 +31,9 @@ async def get_system_status():
     nvidia_info = nvidia_embedding_service.get_status_info()
     rag_info = rag_service.get_status_info()
 
+    # MongoDB status (real, async ping)
+    mongo_status = await db_service.get_status()
+
     components = {
         "gemini": ComponentStatus(
             name=gemini_info["name"],
@@ -50,15 +54,15 @@ async def get_system_status():
             status=rag_info["status"],
             provider="ChromaDB + NVIDIA Embeddings",
             model_or_info=f"{rag_info['documents_indexed']} documents / {rag_info['total_chunks']} chunks",
-            details="RAG vector store indexed"
+            details="RAG vector store — manual_chunks collection"
         ),
         "database": ComponentStatus(
-            name="Telemetry & Maintenance DB",
-            status="CONNECTED",
-            provider="SQLite (Local)",
-            model_or_info="field_ai.db",
-            details="Operational with schema version 1.0"
-        )
+            name="Application Database",
+            status=mongo_status["status"],
+            provider="MongoDB (Motor async)",
+            model_or_info=mongo_status.get("database") or "not configured",
+            details=mongo_status["details"]
+        ),
     }
 
     return SystemStatusResponse(
@@ -67,5 +71,5 @@ async def get_system_status():
         environment=settings.ENVIRONMENT,
         timestamp=datetime.utcnow(),
         components=components,
-        summary="All core services operational. Phase 1 foundation initialized."
+        summary="All core services operational."
     )

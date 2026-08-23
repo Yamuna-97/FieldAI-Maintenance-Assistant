@@ -38,15 +38,21 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: str = ""
     GEMINI_MODEL: str = "gemini-1.5-pro-latest"
     
-    # NVIDIA Embeddings Settings (strictly for RAG embeddings)
+    # NVIDIA Settings
+    # NVIDIA_EMBEDDING_MODEL: Used strictly for RAG document/query embeddings.
+    # NVIDIA_RAG_MODEL: LLM for grounded answer generation (OpenAI-compatible endpoint).
     NVIDIA_API_KEY: str = ""
     NVIDIA_EMBEDDING_MODEL: str = "nemotron-3-embed-1b"
+    NVIDIA_RAG_MODEL: str = "meta/llama-3.1-70b-instruct"
     NVIDIA_API_ENDPOINT: str = "https://integrate.api.nvidia.com/v1"
     NVIDIA_CREDENTIAL_IDENTIFIER: str = "NVIDIABuild-Autogen-59"
 
-    # Storage & Persistence
-    UPLOAD_DIR: str = "data/uploads"
-    CHROMA_PERSIST_DIR: str = ".chroma"
+    # Database
+    # MongoDB — application database (users, equipment, diagnostics, maintenance history)
+    MONGODB_URI: str = ""
+    MONGODB_DB_NAME: str = "fieldai"
+
+    # SQLite fallback (kept for backwards compatibility — ignored if MONGODB_URI is set)
     DATABASE_URL: str = "sqlite:///./field_ai.db"
 
     model_config = SettingsConfigDict(

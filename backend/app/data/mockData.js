@@ -25,11 +25,11 @@ export const MOCK_SYSTEM_STATUS = {
       details: "RAG vector store indexed"
     },
     database: {
-      name: "Application Database",
+      name: "Telemetry & Maintenance DB",
       status: "CONNECTED",
-      provider: "MongoDB (Motor async)",
-      model: "fieldai",
-      details: "Healthy"
+      provider: "SQLite (Local)",
+      model: "field_ai.db",
+      details: "Operational with schema version 1.0"
     }
   }
 };

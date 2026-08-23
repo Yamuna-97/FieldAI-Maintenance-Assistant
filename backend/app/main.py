@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.api.routes import api_router
+from app.db.mongodb import db_service
 
 # Configure logging
 logging.basicConfig(
@@ -18,7 +19,14 @@ async def lifespan(app: FastAPI):
     logger.info(f"Starting {settings.PROJECT_NAME} v{settings.PROJECT_VERSION} in [{settings.ENVIRONMENT}] mode")
     logger.info(f"CORS origins configured: {settings.CORS_ORIGINS}")
     logger.info(f"NVIDIA Embedding model: {settings.NVIDIA_EMBEDDING_MODEL} ({settings.NVIDIA_CREDENTIAL_IDENTIFIER})")
+
+    # Connect to MongoDB
+    await db_service.connect()
+
     yield
+
+    # Disconnect from MongoDB
+    await db_service.disconnect()
     logger.info(f"Shutting down {settings.PROJECT_NAME}")
 
 

@@ -34,6 +34,8 @@ wheels/
 # Data & Uploads
 data/uploads/*
 !data/uploads/.gitkeep
+# ChromaDB vector store (generated data — do not commit)
+backend/app/data/chroma_db/
 .chroma/
 *.db
 *.sqlite3
