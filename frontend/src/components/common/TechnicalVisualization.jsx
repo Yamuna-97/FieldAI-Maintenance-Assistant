@@ -4,9 +4,9 @@ import { Camera, Cpu, BookOpen, CheckCircle, ShieldAlert, Zap, ArrowRight } from
 
 export function TechnicalVisualization({ className = '' }) {
   const nodes = [
-    { id: 'tech', label: 'Field Technician', sub: 'Image + Error Code', icon: Camera, color: 'text-steel-300', border: 'border-steel-600' },
-    { id: 'vision', label: 'Multimodal Vision', sub: 'Gemini Vision AI', icon: Zap, color: 'text-cyan-glow', border: 'border-cyan-accent' },
-    { id: 'rag', label: 'Manuals RAG', sub: 'NVIDIA nemotron 1024D', icon: BookOpen, color: 'text-hazard', border: 'border-hazard' },
+    { id: 'tech', label: 'Field Input', sub: 'Optical / Thermal + Error Code', icon: Camera, color: 'text-steel-300', border: 'border-steel-600' },
+    { id: 'vision', label: 'Neural Vision Core', sub: 'Defect & Heatmap Analysis', icon: Zap, color: 'text-cyan-glow', border: 'border-cyan-accent' },
+    { id: 'rag', label: 'Semantic Vector Core', sub: '1024D OEM Schematics', icon: BookOpen, color: 'text-hazard', border: 'border-hazard' },
     { id: 'agent', label: 'Action Synthesis', sub: 'Grounded Steps & LOTO', icon: ShieldAlert, color: 'text-nominal', border: 'border-nominal' },
   ];
 
@@ -18,7 +18,7 @@ export function TechnicalVisualization({ className = '' }) {
       <div className="relative z-10">
         <div className="flex items-center justify-between mb-4 border-b border-steel-800 pb-2">
           <span className="text-xs font-mono text-steel-400 tracking-wider uppercase">
-            AI Diagnostic Pipeline Architecture
+            Diagnostic Processing Pipeline Architecture
           </span>
           <span className="text-[10px] font-mono text-cyan-glow px-2 py-0.5 rounded bg-cyan-dark/20 border border-cyan-accent/30">
             MULTIMODAL FLOW
@@ -60,11 +60,11 @@ export function TechnicalVisualization({ className = '' }) {
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-cyan-accent" />
-              NVIDIA Text Embeddings (RAG)
+              1024D Semantic Vector Index (ChromaDB)
             </span>
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-nominal" />
-              Gemini Vision & Reasoning
+              Multimodal Vision & Diagnostic Reasoning
             </span>
           </div>
           <span className="text-steel-500">Zero Hallucination Grounded Protocols</span>

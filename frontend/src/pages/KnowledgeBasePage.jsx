@@ -48,7 +48,7 @@ export function KnowledgeBasePage() {
             Knowledge Base & Technical Manuals
           </h2>
           <p className="text-xs font-mono text-steel-400 mt-0.5">
-            Vectorized OEM documentation powered by NVIDIA Nemotron-3-Embed-1B (1024D)
+            Vectorized OEM engineering documentation powered by 1024D Semantic Vector Index
           </p>
         </div>
 
@@ -84,8 +84,8 @@ export function KnowledgeBasePage() {
       {/* RAG Status Bar */}
       <div className="p-4 rounded-lg bg-carbon-900 border border-steel-800 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
         <div className="flex items-center gap-3">
-          <Badge variant="cyan" size="sm" dot>NVIDIA RAG PIPELINE</Badge>
-          <span className="text-steel-300">Model: nemotron-3-embed-1b</span>
+          <Badge variant="cyan" size="sm" dot>SEMANTIC VECTOR RETRIEVAL</Badge>
+          <span className="text-steel-300">Index: Dense 1024D</span>
           <span className="text-steel-600">|</span>
           <span className="text-steel-400">Embedding Dim: 1024</span>
         </div>
@@ -163,7 +163,7 @@ export function KnowledgeBasePage() {
         isOpen={isUploadOpen}
         onClose={() => setIsUploadOpen(false)}
         title="Upload OEM Manual for RAG Ingestion"
-        subtitle="Processes PDF with PyMuPDF and generates embeddings via NVIDIA nemotron-3-embed-1b"
+        subtitle="Extracts document sections and generates 1024D vector embeddings for grounded search"
         footer={
           <>
             <Button variant="ghost" size="md" onClick={() => setIsUploadOpen(false)}>

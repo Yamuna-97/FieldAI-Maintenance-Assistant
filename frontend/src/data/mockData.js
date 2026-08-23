@@ -4,30 +4,30 @@ export const MOCK_SYSTEM_STATUS = {
   environment: "development",
   components: {
     gemini: {
-      name: "Gemini AI Engine",
+      name: "Neural Vision & Reasoning Core",
       status: "ONLINE",
-      provider: "Google Gemini",
-      model: "gemini-1.5-pro-latest",
-      details: "Multimodal Vision, LLM Reasoning, Diagnostic Synthesis"
+      provider: "Multimodal AI Engine",
+      model: "v1.5-pro-vision",
+      details: "Optical Anomaly Localization, Flange Alignment, Diagnostic Synthesis"
     },
     nvidia_embeddings: {
-      name: "NVIDIA RAG Embeddings",
+      name: "High-Dimensional Vector Engine",
       status: "ONLINE",
-      provider: "NVIDIA API",
-      model: "nemotron-3-embed-1b",
-      details: "Text Embeddings for Manuals & RAG Only (NVIDIABuild-Autogen-59)"
+      provider: "Neural Vector Core",
+      model: "semantic-embed-1024d",
+      details: "1024D Semantic Vectorization for OEM Manuals & Schematics"
     },
     knowledge_base: {
-      name: "Manuals Vector Index",
+      name: "OEM Manuals Vector Index",
       status: "READY",
-      provider: "ChromaDB + NVIDIA Embeddings",
+      provider: "Persistent Vector Store",
       model: "14 documents / 328 chunks",
-      details: "RAG vector store indexed"
+      details: "Grounded Manual Retrieval Index"
     },
     database: {
       name: "Application Database",
       status: "CONNECTED",
-      provider: "MongoDB (Motor async)",
+      provider: "MongoDB Atlas",
       model: "fieldai",
       details: "Healthy"
     }

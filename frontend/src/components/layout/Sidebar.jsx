@@ -117,11 +117,11 @@ export function Sidebar({ activeTab, onSelectTab, isCollapsed, onToggleCollapse,
             
             <div className="space-y-1 pt-1 text-[10px] font-mono text-steel-400">
               <div className="flex justify-between items-center py-0.5 px-1.5 rounded bg-carbon-900">
-                <span>GEMINI VISION</span>
-                <span className="text-emerald-400">READY</span>
+                <span>NEURAL VISION</span>
+                <span className="text-emerald-400">ACTIVE</span>
               </div>
               <div className="flex justify-between items-center py-0.5 px-1.5 rounded bg-carbon-900">
-                <span>NVIDIA RAG</span>
+                <span>VECTOR CORE</span>
                 <span className="text-cyan-glow">1024D</span>
               </div>
             </div>

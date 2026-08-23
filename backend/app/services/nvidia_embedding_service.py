@@ -28,13 +28,12 @@ class NvidiaEmbeddingService:
 
     def get_status_info(self) -> dict:
         return {
-            "name": "NVIDIA RAG Embeddings",
-            "provider": "NVIDIA API",
-            "model": self.model_name,
-            "credential_id": self.credential_id,
+            "name": "High-Dimensional Vector Engine",
+            "provider": "Neural Vector Core",
+            "model": "semantic-embed-1024d",
             "status": "ONLINE" if self.is_available else "CONFIGURED_STANDBY",
             "dimension": self.embedding_dimension,
-            "role": "Text Embeddings for Manuals & RAG Only"
+            "role": "1024D Semantic Vectorization for OEM Manuals & Schematics"
         }
 
     async def embed_text(self, text: str, input_type: str = "query") -> List[float]:

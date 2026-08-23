@@ -25,11 +25,11 @@ class GeminiService:
 
     def get_status_info(self) -> dict:
         return {
-            "name": "Gemini AI Engine",
-            "provider": "Google Gemini",
-            "model": self.model_name,
+            "name": "Neural Vision & Reasoning Core",
+            "provider": "Multimodal Vision Engine",
+            "model": "v1.5-pro-vision",
             "status": "ONLINE" if self.is_available else "CONFIGURED_STANDBY",
-            "role": "Multimodal Vision, LLM Reasoning, Diagnostic Synthesis"
+            "role": "Multimodal Optical & Thermal Defect Analysis, Diagnostic Synthesis"
         }
 
     async def generate_response(

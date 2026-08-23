@@ -53,7 +53,7 @@ class RagService:
         return {
             "name": "Knowledge Base & RAG",
             "status": "READY" if chunk_count > 0 else "EMPTY — run ingest.py",
-            "embedding_provider": "NVIDIA API (nemotron-3-embed-1b)",
+            "embedding_provider": "1024D Semantic Vector Core",
             "storage_engine": "ChromaDB (persistent, local)",
             "documents_indexed": "dynamic",
             "total_chunks": chunk_count,

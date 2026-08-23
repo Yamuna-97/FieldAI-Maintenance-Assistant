@@ -80,7 +80,7 @@ export function DiagnosticsPage({ initialEquipmentId }) {
               Multimodal Diagnostic Workstation
             </h2>
             <p className="text-xs font-mono text-steel-400">
-              Vision Anomaly Detection · NVIDIA Nemotron RAG · Grounded LOTO Synthesis
+              Optical Anomaly Detection · 1024D Semantic Vector Retrieval · Grounded LOTO Synthesis
             </p>
           </div>
         </div>
@@ -104,7 +104,7 @@ export function DiagnosticsPage({ initialEquipmentId }) {
           {/* Visual Dropzone */}
           <Card
             title="Visual Evidence & Camera Inspection"
-            subtitle="Optical / Thermal sensor input for Gemini Vision"
+            subtitle="Optical / Thermal sensor input for Neural Vision Analysis"
             icon={Camera}
           >
             <ImageDropzone

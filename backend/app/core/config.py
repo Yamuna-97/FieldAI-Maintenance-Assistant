@@ -55,6 +55,11 @@ class Settings(BaseSettings):
     # SQLite fallback (kept for backwards compatibility — ignored if MONGODB_URI is set)
     DATABASE_URL: str = "sqlite:///./field_ai.db"
 
+    # Authentication & JWT
+    JWT_SECRET_KEY: str = "fieldai-super-secret-key-change-in-production-2026"
+    JWT_ALGORITHM: str = "HS256"
+    JWT_EXPIRE_MINUTES: int = 1440  # 24 hours
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

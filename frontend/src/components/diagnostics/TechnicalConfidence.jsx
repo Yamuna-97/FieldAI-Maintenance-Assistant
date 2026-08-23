@@ -33,7 +33,7 @@ export function TechnicalConfidence({ confidenceScore = 0.94, citations = [] }) 
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-mono text-steel-300 uppercase tracking-wider flex items-center gap-1.5">
             <BookOpen className="w-3.5 h-3.5 text-cyan-glow" />
-            Retrieved Manual Citations (NVIDIA RAG)
+            Retrieved OEM Manual Citations (Vector RAG)
           </span>
           <span className="text-[10px] font-mono text-steel-500">
             {citations.length} Grounded Sources

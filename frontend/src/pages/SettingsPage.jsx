@@ -33,10 +33,10 @@ export function SettingsPage() {
       <div className="flex items-center justify-between pb-4 border-b border-steel-800">
         <div>
           <h2 className="text-xl font-bold text-steel-100 font-sans tracking-wide">
-            System Architecture & AI Providers
+            System Architecture & Neural Engines
           </h2>
           <p className="text-xs font-mono text-steel-400 mt-0.5">
-            Operational status of Gemini, NVIDIA Nemotron, ChromaDB, and FastAPI backend
+            Operational status of Neural Vision Core, Semantic Vector Engine, ChromaDB, and MongoDB Atlas
           </p>
         </div>
 
@@ -53,10 +53,10 @@ export function SettingsPage() {
 
       {/* AI Providers Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Gemini Provider */}
+        {/* Neural Vision Core */}
         <Card
-          title="Google Gemini AI Engine"
-          subtitle="Primary Multimodal & LLM Reasoning Engine"
+          title="Neural Vision & Diagnostic Core"
+          subtitle="Multimodal Optical Analysis & Diagnostic Synthesis"
           icon={Server}
           highlight
         >
@@ -66,24 +66,24 @@ export function SettingsPage() {
               <Badge variant="online" size="sm" dot>ONLINE</Badge>
             </div>
             <div className="flex justify-between py-1 border-b border-steel-800">
-              <span className="text-steel-400">ACTIVE MODEL:</span>
-              <span className="text-cyan-glow font-bold">gemini-1.5-pro-latest</span>
+              <span className="text-steel-400">ACTIVE ENGINE:</span>
+              <span className="text-cyan-glow font-bold">Neural-Vision-v1.5</span>
             </div>
             <div className="flex justify-between py-1 border-b border-steel-800">
               <span className="text-steel-400">CAPABILITIES:</span>
-              <span className="text-steel-200">Vision, Reasoning, Tools, Grounding</span>
+              <span className="text-steel-200">Vision Analysis, Anomaly Heatmaps, LOTO Synthesis</span>
             </div>
             <div className="flex justify-between py-1">
               <span className="text-steel-400">CREDENTIAL STATUS:</span>
-              <span className="text-nominal">SECURE (ENV: GEMINI_API_KEY)</span>
+              <span className="text-nominal">AUTHENTICATED & SECURE</span>
             </div>
           </div>
         </Card>
 
-        {/* NVIDIA Embeddings Provider */}
+        {/* Semantic Vector Engine */}
         <Card
-          title="NVIDIA RAG Embeddings"
-          subtitle="Strictly for Manuals Vector Embeddings"
+          title="High-Dimensional Vector Engine"
+          subtitle="Grounded OEM Manual & Schematic Vectorization"
           icon={Server}
           highlight
         >
@@ -93,16 +93,16 @@ export function SettingsPage() {
               <Badge variant="cyan" size="sm" dot>ONLINE</Badge>
             </div>
             <div className="flex justify-between py-1 border-b border-steel-800">
-              <span className="text-steel-400">EMBEDDING MODEL:</span>
-              <span className="text-cyan-glow font-bold">nemotron-3-embed-1b</span>
+              <span className="text-steel-400">VECTOR EMBEDDING:</span>
+              <span className="text-cyan-glow font-bold">1024-Dimensional Dense Vector</span>
             </div>
             <div className="flex justify-between py-1 border-b border-steel-800">
-              <span className="text-steel-400">CONFIG IDENTIFIER:</span>
-              <span className="text-steel-200">NVIDIABuild-Autogen-59</span>
+              <span className="text-steel-400">RETRIEVAL TYPE:</span>
+              <span className="text-steel-200">Cosine / L2 Grounded Similarity</span>
             </div>
             <div className="flex justify-between py-1">
               <span className="text-steel-400">ROLE:</span>
-              <span className="text-hazard">1024D Manual Passage Vectorization</span>
+              <span className="text-hazard">Zero-Hallucination OEM Retrieval</span>
             </div>
           </div>
         </Card>
@@ -123,8 +123,8 @@ export function SettingsPage() {
             </div>
 
             <div className="p-3 rounded bg-carbon-950 border border-steel-800">
-              <span className="text-steel-500 block mb-1">CONDA PYTHON ENVIRONMENT</span>
-              <span className="text-steel-200 font-bold">version11 (Python 3.11.15)</span>
+              <span className="text-steel-500 block mb-1">PYTHON RUNTIME</span>
+              <span className="text-steel-200 font-bold">FieldAI Core 3.11</span>
               <div className="mt-2">
                 <Badge variant="nominal" size="sm" dot>VERIFIED ENVIRONMENT</Badge>
               </div>
@@ -134,15 +134,15 @@ export function SettingsPage() {
           <div className="p-3 rounded bg-carbon-950 border border-steel-800 flex items-center justify-between">
             <div>
               <span className="text-steel-200 font-bold">Vector Database (ChromaDB)</span>
-              <p className="text-[11px] text-steel-400 mt-0.5">Local persistent storage path: .chroma/</p>
+              <p className="text-[11px] text-steel-400 mt-0.5">Persistent OEM embeddings store: backend/app/data/chroma_db/</p>
             </div>
-            <Badge variant="nominal" size="sm">READY</Badge>
+            <Badge variant="nominal" size="sm">READY (238 CHUNKS)</Badge>
           </div>
 
           <div className="p-3 rounded bg-carbon-950 border border-steel-800 flex items-center justify-between">
             <div>
-              <span className="text-steel-200 font-bold">Telemetry Database (SQLite)</span>
-              <p className="text-[11px] text-steel-400 mt-0.5">Local relational database: field_ai.db</p>
+              <span className="text-steel-200 font-bold">Application Database (MongoDB Atlas)</span>
+              <p className="text-[11px] text-steel-400 mt-0.5">Cloud cluster database: fieldai</p>
             </div>
             <Badge variant="nominal" size="sm">CONNECTED</Badge>
           </div>
