@@ -41,8 +41,33 @@ export async function getManualsList(params = {}) {
     const endpoint = `/api/v1/manuals${queryString ? `?${queryString}` : ''}`;
     return await fetchApi(endpoint);
   } catch (error) {
+    console.warn('Manuals API error, returning local fallback:', error.message);
     return MOCK_MANUALS_LIST;
   }
+}
+
+export async function uploadManual(formData) {
+  return await fetchApi('/api/v1/manuals/upload', {
+    method: 'POST',
+    body: formData
+  });
+}
+
+export async function deleteManual(manualId) {
+  return await fetchApi(`/api/v1/manuals/${manualId}`, {
+    method: 'DELETE'
+  });
+}
+
+export async function queryRag(payload) {
+  return await fetchApi('/api/v1/rag/query', {
+    method: 'POST',
+    body: JSON.stringify(payload)
+  });
+}
+
+export async function getRagStatus() {
+  return await fetchApi('/api/v1/rag/status');
 }
 
 export async function getMaintenanceHistory(params = {}) {
@@ -56,3 +81,4 @@ export async function getMaintenanceHistory(params = {}) {
     return MOCK_MAINTENANCE_HISTORY;
   }
 }
+

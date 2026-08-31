@@ -289,5 +289,78 @@ def run_ingestion() -> dict:
     }
 
 
+def ingest_pdf_file(
+    pdf_path: Path,
+    source_type: str = "own",
+    equipment_type: str | None = None
+) -> dict:
+    """
+    Ingest a single PDF file into ChromaDB.
+    Extracts text, splits into chunks, computes embeddings, and upserts into ChromaDB.
+    """
+    if not pdf_path.exists():
+        raise FileNotFoundError(f"PDF not found: {pdf_path}")
+
+    doc_name = pdf_path.name
+    if not equipment_type or equipment_type.lower() == "all" or equipment_type == "unknown":
+        equipment_type = infer_equipment_type(doc_name)
+
+    pdf_hash = _sha256(pdf_path)
+    pages = _extract_pages(pdf_path)
+    if not pages:
+        logger.warning(f"No extractable text in {doc_name}")
+        return {
+            "doc_name": doc_name,
+            "pages": 0,
+            "chunks": 0,
+            "equipment_type": equipment_type,
+            "status": "NO_TEXT"
+        }
+
+    documents, metadatas, ids = _chunk_pages(
+        pages, doc_name, source_type, equipment_type, pdf_hash
+    )
+
+    if not ids:
+        return {
+            "doc_name": doc_name,
+            "pages": len(pages),
+            "chunks": 0,
+            "equipment_type": equipment_type,
+            "status": "NO_CHUNKS"
+        }
+
+    collection = _get_chroma_collection()
+    embeddings = embed_passages(documents)
+    _upsert_batch(collection, documents, embeddings, metadatas, ids)
+
+    logger.info(f"Successfully ingested {doc_name}: {len(pages)} pages, {len(ids)} chunks")
+    return {
+        "doc_name": doc_name,
+        "pages": len(pages),
+        "chunks": len(ids),
+        "equipment_type": equipment_type,
+        "status": "INDEXED"
+    }
+
+
+def delete_pdf_from_chroma(doc_name: str) -> int:
+    """
+    Delete all chunks belonging to doc_name from ChromaDB collection.
+    """
+    try:
+        collection = _get_chroma_collection()
+        res = collection.get(where={"doc_name": doc_name})
+        chunk_ids = res.get("ids", [])
+        if chunk_ids:
+            collection.delete(ids=chunk_ids)
+            logger.info(f"Deleted {len(chunk_ids)} chunks for {doc_name} from ChromaDB")
+            return len(chunk_ids)
+    except Exception as e:
+        logger.error(f"Error deleting chunks for {doc_name}: {e}")
+    return 0
+
+
 if __name__ == "__main__":
     run_ingestion()
+

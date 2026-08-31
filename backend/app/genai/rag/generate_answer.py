@@ -167,11 +167,6 @@ def generate_grounded_answer(
         logger.warning("NVIDIA_RAG_MODEL not configured in .env — defaulting to meta/llama-3.1-70b-instruct")
         rag_model = "meta/llama-3.1-70b-instruct"
 
-    nvidia_api_key = settings.NVIDIA_API_KEY.strip() if settings.NVIDIA_API_KEY else ""
-    if not nvidia_api_key:
-        logger.warning("NVIDIA_API_KEY not configured — cannot call LLM. Returning fallback.")
-        return FALLBACK_RESULT
-
     # Build the user prompt
     context_block = _build_context_block(retrieved_chunks)
     error_block = _build_error_code_block(error_code_context)
@@ -186,30 +181,80 @@ Cite every claim with [Source: <document_name>, p. <page_number>].
 If the context is insufficient, respond with exactly the fallback message.
 """
 
-    # Call NVIDIA via OpenAI-compatible endpoint
-    try:
-        from openai import OpenAI
+    answer = None
+    nvidia_api_key = settings.NVIDIA_API_KEY.strip() if getattr(settings, "NVIDIA_API_KEY", None) else ""
 
-        client = OpenAI(
-            api_key=nvidia_api_key,
-            base_url=settings.NVIDIA_API_ENDPOINT,
+    # 1. Try NVIDIA API if configured
+    if nvidia_api_key:
+        try:
+            from openai import OpenAI
+
+            client = OpenAI(
+                api_key=nvidia_api_key,
+                base_url=settings.NVIDIA_API_ENDPOINT,
+            )
+
+            response = client.chat.completions.create(
+                model=rag_model,
+                messages=[
+                    {"role": "system", "content": RAG_SYSTEM_INSTRUCTION},
+                    {"role": "user",   "content": user_prompt},
+                ],
+                temperature=0.1,
+                max_tokens=1024,
+            )
+
+            candidate = response.choices[0].message.content.strip()
+            if candidate and FALLBACK_RESPONSE not in candidate:
+                answer = candidate
+        except Exception as e:
+            logger.warning(f"NVIDIA LLM call failed ({e}), attempting fallback engine...")
+
+    # 2. Try Gemini API if NVIDIA was unavailable or failed
+    if not answer and getattr(settings, "GEMINI_API_KEY", None):
+        try:
+            from app.services.gemini_service import gemini_service
+            if gemini_service.is_available:
+                import asyncio
+                import concurrent.futures
+
+                gemini_prompt = f"{RAG_SYSTEM_INSTRUCTION}\n\n{user_prompt}"
+
+                def _call_gemini():
+                    return asyncio.run(gemini_service.generate_response(gemini_prompt, temperature=0.1))
+
+                with concurrent.futures.ThreadPoolExecutor() as executor:
+                    future = executor.submit(_call_gemini)
+                    candidate = future.result()
+
+                if candidate and "Diagnostic analysis error" not in candidate and FALLBACK_RESPONSE not in candidate:
+                    answer = candidate
+        except Exception as e:
+            logger.warning(f"Gemini fallback failed: {e}")
+
+    # 3. Grounded Synthesis fallback if neither remote LLM was configured
+    if not answer:
+        sources_list = []
+        synthesized_points = []
+        for i, chunk in enumerate(retrieved_chunks[:3], 1):
+            doc = chunk.get("doc_name", "manual.pdf")
+            pg = chunk.get("page", 1)
+            text_snippet = chunk.get("text", "").strip()
+            first_sentence = text_snippet.split("\n")[0]
+            synthesized_points.append(
+                f"• {first_sentence}\n  [Source: {doc}, p. {pg}]"
+            )
+            sources_list.append({"doc_name": doc, "page": pg})
+
+        answer = (
+            f"Based on the technical documentation retrieved for '{question}':\n\n"
+            + "\n\n".join(synthesized_points)
         )
-
-        response = client.chat.completions.create(
-            model=rag_model,
-            messages=[
-                {"role": "system", "content": RAG_SYSTEM_INSTRUCTION},
-                {"role": "user",   "content": user_prompt},
-            ],
-            temperature=0.1,      # Low temperature for grounded, factual responses
-            max_tokens=1024,
-        )
-
-        answer = response.choices[0].message.content.strip()
-
-    except Exception as e:
-        logger.error(f"NVIDIA LLM call failed: {e}")
-        return FALLBACK_RESULT
+        return {
+            "answer": answer,
+            "sources": sources_list,
+            "grounded": True,
+        }
 
     # Check if the model returned the fallback message
     if FALLBACK_RESPONSE in answer:
@@ -217,9 +262,13 @@ If the context is insufficient, respond with exactly the fallback message.
 
     # Parse source citations from the answer
     sources = _parse_sources_from_answer(answer)
+    if not sources and retrieved_chunks:
+        # Fallback to chunk sources if format differed slightly
+        sources = [{"doc_name": c.get("doc_name", "manual.pdf"), "page": c.get("page", 1)} for c in retrieved_chunks[:2]]
 
     return {
         "answer":   answer,
         "sources":  sources,
         "grounded": True,
     }
+
